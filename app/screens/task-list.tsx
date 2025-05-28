@@ -14,8 +14,10 @@ import {
   View,
 } from "react-native"
 
+// Configure notification handler for the entire app
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
+    shouldShowAlert: true,
     shouldPlaySound: true,
     shouldSetBadge: false,
     shouldShowBanner: true,
@@ -28,6 +30,11 @@ export default function TaskList() {
   const [tasks, setTasks] = useState<Task[]>([])
   const router = useRouter()
 
+  /**
+   * Shows a notification when a task status changes
+   * @param task - The task that was updated
+   * @param isDone - Whether the task was marked as complete or incomplete
+   */
   const showTaskNotification = async (task: Task, isDone: boolean) => {
     await Notifications.scheduleNotificationAsync({
       content: {
@@ -36,10 +43,13 @@ export default function TaskList() {
           ? `Great job! You completed "${task.name}"`
           : `You reopened "${task.name}"`,
       },
-      trigger: null,
+      trigger: null, // Show immediately
     })
   }
 
+  /**
+   * Loads tasks from AsyncStorage and updates the state
+   */
   const loadTasks = async () => {
     try {
       const storedTasks = await AsyncStorage.getItem("tasks")
@@ -53,6 +63,10 @@ export default function TaskList() {
     }
   }
 
+  /**
+   * Saves tasks to AsyncStorage and updates the state
+   * @param updatedTasks - Array of tasks to save
+   */
   const saveTasks = async (updatedTasks: Task[]) => {
     try {
       await AsyncStorage.setItem("tasks", JSON.stringify(updatedTasks))
@@ -62,6 +76,10 @@ export default function TaskList() {
     }
   }
 
+  /**
+   * Toggles a task's completion status
+   * @param id - ID of the task to toggle
+   */
   const toggleTask = async (id: string) => {
     const taskToUpdate = tasks.find((task) => task.id === id)
     if (!taskToUpdate) return
@@ -75,6 +93,7 @@ export default function TaskList() {
     await showTaskNotification(taskToUpdate, newDoneStatus)
   }
 
+  // Setup notifications on component mount
   useEffect(() => {
     const setup = async () => {
       const { status } = await Notifications.requestPermissionsAsync()
@@ -88,12 +107,18 @@ export default function TaskList() {
     setup()
   }, [])
 
+  // Reload tasks when screen comes into focus
   useFocusEffect(
     useCallback(() => {
       loadTasks()
     }, [])
   )
 
+  /**
+   * Formats the date for display
+   * @param date - ISO string date to format
+   * @returns Formatted date string (Today, Tomorrow, or date)
+   */
   const formatDate = (date: string) => {
     const taskDate = new Date(date)
     const today = new Date()
@@ -116,22 +141,34 @@ export default function TaskList() {
     }
   }
 
+  /**
+   * Gets the color for the due date based on how close it is
+   * @param date - ISO string date to check
+   * @returns Color string based on due date proximity
+   */
   const getDueDateColor = (date: string) => {
     const taskDate = new Date(date)
     const today = new Date()
     const timeDiff = taskDate.getTime() - today.getTime()
     const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24))
 
-    if (daysDiff < 0) return "#ff4444"
-    if (daysDiff === 0) return "#ffa500"
-    if (daysDiff <= 2) return "#ffd700"
-    return "#666"
+    if (daysDiff < 0) return "#ff4444" // Overdue
+    if (daysDiff === 0) return "#ffa500" // Due today
+    if (daysDiff <= 2) return "#ffd700" // Due soon
+    return "#666" // Default
   }
 
+  /**
+   * Handles user logout
+   */
   const handleLogout = () => {
     router.replace("/")
   }
 
+  /**
+   * Renders an individual task item
+   * @param item - Task to render
+   */
   const renderItem = ({ item }: { item: Task }) => (
     <TouchableOpacity
       onPress={() => toggleTask(item.id)}
