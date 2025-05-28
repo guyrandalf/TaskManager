@@ -2,6 +2,10 @@
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
+## Video Link
+
+https://youtu.be/ORt5anBVzNA
+
 ## Overview
 
 As a software engineer, I’m working to document my development process effectively while building practical mobile applications. I created a task management app using React Native Expo, where users can log in, create tasks with due dates, view and complete tasks, receive notifications, and log out, with data stored locally using AsyncStorage. My goal is to establish a foundation for future projects, like my upcoming Web Apps and Cloud Databases modules, by mastering mobile development workflows.
