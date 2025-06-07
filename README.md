@@ -2,6 +2,14 @@
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
+## Video Link
+
+https://youtu.be/ORt5anBVzNA
+
+## Overview
+
+As a software engineer, I’m working to document my development process effectively while building practical mobile applications. I created a task management app using React Native Expo, where users can log in, create tasks with due dates, view and complete tasks, receive notifications, and log out, with data stored locally using AsyncStorage. My goal is to establish a foundation for future projects, like my upcoming Web Apps and Cloud Databases modules, by mastering mobile development workflows.
+
 ## Get started
 
 1. Install dependencies
@@ -24,6 +32,22 @@ In the output, you'll find options to open the app in a
 - [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+
+## Development Environment
+
+I developed this app using Visual Studio Code as my editor, with TypeScript as the programming language and React Native Expo as the framework. I managed dependencies with npm and used Git/GitHub for version control, testing the app on both iOS and Android via Expo Go.
+
+## Useful Websites
+
+These resources helped me throughout the project:
+
+- Expo Documentation
+
+- React Native AsyncStorage
+
+- Expo Notifications
+
+- DateTimePicker
 
 ## Get a fresh project
 
