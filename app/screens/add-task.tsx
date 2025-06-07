@@ -15,12 +15,20 @@ import {
   View,
 } from "react-native"
 
+/**
+ * AddTask component for creating new tasks
+ * Provides a form interface for task name and due date input
+ */
 export default function AddTask() {
   const [name, setName] = useState<string>("")
   const [dueDate, setDueDate] = useState<Date>(new Date())
   const [showPicker, setShowPicker] = useState<boolean>(Platform.OS === "ios")
   const router = useRouter()
 
+  /**
+   * Saves a new task to storage
+   * Validates input, creates task object, and updates storage
+   */
   const saveTask = async () => {
     if (!name.trim()) {
       Alert.alert("Error", "Please enter a task name")
@@ -45,6 +53,11 @@ export default function AddTask() {
     }
   }
 
+  /**
+   * Handles date change events from the date picker
+   * @param event - The event object from the date picker
+   * @param selectedDate - The date selected by the user
+   */
   const onDateChange = (event: any, selectedDate?: Date) => {
     if (event.type === "dismissed") {
       setShowPicker(Platform.OS === "ios")
@@ -52,10 +65,15 @@ export default function AddTask() {
     }
 
     const currentDate = selectedDate || dueDate
-    setShowPicker(Platform.OS === "ios")
+    setShowPicker(Platform.OS === "ios") // Keep open on iOS, close on Android
     setDueDate(currentDate)
   }
 
+  /**
+   * Formats a date for display
+   * @param date - Date to format
+   * @returns Formatted date string
+   */
   const formatDate = (date: Date) => {
     return date.toLocaleDateString("en-US", {
       weekday: "short",
